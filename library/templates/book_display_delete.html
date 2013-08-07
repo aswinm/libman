@@ -1,0 +1,19 @@
+<html>
+	<title>List Of Books</title>
+	<body>
+		<ul>
+			{% for i in booklist %}
+			<li>{{ i.bid}} {{  i.name  }}<li>
+			{% endfor %}
+		</ul>
+		{% if j %}
+		<h5> Enter the Book Id to Delete</h5>
+		<form action = "/delete/" method = "get">
+			<input type = "text" name = "bname">
+			<input type = "submit" value = "Delete">
+
+		</form>
+		{% endif %}
+	</body>
+</html>
+
