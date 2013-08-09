@@ -20,30 +20,26 @@ def add(request):
 		c = RequestContext(request)
 		return HttpResponse(t.render(c))
 
-	if request.method == 'POST':
-		form = BookAddForm(request.POST)
-		if form.is_valid():
-			book_details = Book.objects.create(
-					bid = form.cleaned_data['bid'],
-					name = form.cleaned_data['bname'],
-					author = form.cleaned_data['author'],
-					Totbooks = form.cleaned_data['TotBooks'],
-					Avlbooks = form.cleaned_data['AvlBooks'],
-					)
-			book_details.save()
-			t = loader.get_template('success.html')
-			c = RequestContext(request)	
-			return HttpResponse(t.render(c))
-		else:
-			form = BookAdForm()
-			text = 'Book Added Successfully'
-			context = RequestContext(request, { 'text' :text })
-			return render_to_response('add_book.html' , {'form': form }, context )
-
+	form = BookAddForm(request.POST)
+	if request.method == 'POST' and form.is_valid():
+		book_details = Book.objects.create(
+				bid = form.cleaned_data['bid'],
+				name = form.cleaned_data['bname'],
+				author = form.cleaned_data['author'],
+				Totbooks = form.cleaned_data['TotBooks'],
+				Avlbooks = form.cleaned_data['AvlBooks'],
+				)
+		book_details.save()
+		t = loader.get_template('success.html')
+		text = 'Book Added Successfully'
+		c = RequestContext(request, { 'text' : text } )	
+		return HttpResponse(t.render(c))
 	else:
-		form = BookAddForm()
-		context = RequestContext(request)
-		return render_to_response('add_book.html' , {'form': form }, context )
+		text = 'Add New Book'
+		t = loader.get_template('add.html')
+		context = RequestContext(request, { 'text' :text , 'form': form})
+		return HttpResponse(t.render(context))
+	
 
 def search(request):
 	if not views.if_authenticated():

@@ -4,7 +4,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from models import Auth
 from forms import LoginForm
+
 authenticated  = 0
+
 def index(request):
 	global authenticated
 	if request.method == 'POST':

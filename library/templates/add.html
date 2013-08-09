@@ -1,0 +1,11 @@
+<html>
+	<title>Add Book</title>
+	<body>
+		<strong>{{ text }}</strong>
+		<form action = "." method = "post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type = "submit" value = "Add Book">
+		</form>
+	</body>
+</html>
