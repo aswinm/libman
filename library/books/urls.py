@@ -8,5 +8,6 @@ urlpatterns = patterns('',
 		url(r'login/welcome/books/search/?$', views.search),
 		url(r'login/welcome/books/delete/display/?$', views.display),
 		url(r'login/welcome/books/search/display/?$', views.display),
+		url(r'login/welcome/books/delete/display/del/?$', views.delete),
 		)
 

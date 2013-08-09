@@ -1,19 +1,39 @@
 <html>
 	<title>List Of Books</title>
 	<body>
-		<ul>
+		<table border = "1">
+			<tr> 
+				<th>Book Id</th>
+				<th>Book Name</th>
+				<th>Author</th>
+				<th>Total Books</th>
+				<th>Available Books</th>
+			</tr>
+
+			
 			{% for i in booklist %}
-			<li>{{ i.bid}} {{  i.name  }}<li>
+			<tr>
+				<td>{{ i.bid}}</td> 
+				<td>{{  i.name  }}</td>
+				<td>{{ i.author }}</td>
+				<td>{{ i.Totbooks }}</td>
+				<td>{{ i.Avlbooks }}</td>
+			</tr>
 			{% endfor %}
-		</ul>
+			
+			
+		</table>
+		
 		{% if j %}
 		<h5> Enter the Book Id to Delete</h5>
-		<form action = "/delete/" method = "get">
+		<form action = "login/welcome/books/delete/display/del" method = "post">
+			{% csrf_token %}
 			<input type = "text" name = "bname">
 			<input type = "submit" value = "Delete">
 
 		</form>
 		{% endif %}
+		<a href = "login/welcome/books/">Back</a>
 	</body>
 </html>
 
