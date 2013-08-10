@@ -1,0 +1,12 @@
+<html>
+	<title>SEARCH SUBSCRIBER</title>
+	<body>
+		<h1>SEARCH SUBSCRIBERS</h1>
+		<form action = "/login/welcome/subscribers/search/display" method = "post">
+			{% csrf_token %}
+			<input type = "text" name = "name">
+			<input type = "submit" value = "Search">
+		</form>
+		<a href = "/login/welcome/subscribers/">Back</a>
+	</body>
+</html>

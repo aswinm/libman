@@ -5,6 +5,7 @@ from models import Subscriber
 from login import views
 from forms import SubscriberForm
 
+flag = 0
 def index(request):
 	if not views.if_authenticated():
 		page = loader.get_template('login.html')
@@ -50,4 +51,52 @@ def addSub(request):
 		c = RequestContext(request , { 'form' : form , 'text' : text})
 		return HttpResponse(t.render(c))
 
+def search(request):
+	if not views.if_authenticated():
+		t = loader.get_template('login.html')
+		c = RequestContext(request)
+		return HttpResponse(t.render(c))
+	t = loader.get_template('search_sub.html')
+	c = RequestContext(request)
+	return HttpResponse(t.render(c))
+
+def searchdelete(request):
+	if not views.if_authenticated():
+		t = loader.get_template('login.html')
+		c = RequestContext(request)
+		return HttpResponse(t.render(c))
+	global flag
+	flag = 1
+	t = loader.get_template('search_sub.html')
+	c = RequestContext(request)
+	return HttpResponse(t.render(c))
+
+def display(request):
+	if not views.if_authenticated():
+		t = loader.get_template('login.html')
+		c = RequestContext(request)
+		return HttpResponse(t.render(c))
+	global flag
+	search_details = request.POST
+	result = Subscriber.objects.filter(name__contains = search_details['name'])
+	if not result:
+		return HttpResponse('Subscriber not Found')
+	t = loader.get_template('subscriber_display_delete.html')
+	context = RequestContext(request , { 'sublist' : result, 'j' : flag })
+	return HttpResponse(t.render(context))
+
+def delete(request):
+	if not views.if_authenticated():
+		t = loader.get_template('login.html')
+		c = RequestContext(request)
+		return HttpResponse(t.render(c))
+	delete_details = request.POST
+	if not Subscriber.objects.filter(sid = delete_details['name']).delete():
+		text = 'Subscriber Deleted Successfully'
+		t = loader.get_template('success.html')
+		c = RequestContext(request , { 'text' : text })
+		return HttpResponse(t.render(c))
+	return HttpResponse('Error While Deleting. Try again')
+
 # Create your views here.
+

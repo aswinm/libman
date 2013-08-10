@@ -1,0 +1,34 @@
+<html>
+	<title>SUBSCRIBER DISPLAY</title>
+	<body>
+		<h1>SUBSCRIBER DATA</h1>
+		<table border = "1">
+			<tr>
+				<th>Sub ID</th>
+				<th>NAME</th>
+				<th>GENDER</th>
+				<th>CONTACT</th>
+				<th>MAIL</th>
+			</tr>
+				{% for i in sublist %}
+			<tr>
+				<td>{{ i.sid }}</td>
+				<td>{{ i.name }}</td>
+				<td>{{ i.gender }}</td>
+				<td>{{ i.contact }}</td>
+				<td>{{ i.mail }}</td>
+			</tr>
+				{% endfor %}
+		</table>
+		{% if j %}
+		<form action = "login/welcome/subscribers/search/display/delete/" method = "post">
+			{% csrf_token %}
+			<h5>Enter Book Id to Delete</h5>
+			<input type = "text" name = "name">
+			<input type = "submit" value = "Delete">
+		</form>
+		{% endif %}
+	</body>
+</html>
+			
+
