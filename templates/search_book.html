@@ -1,0 +1,12 @@
+<html>
+	<title>Delete Book</title>
+	<body>
+		<h1> SEARCH BOOK </h1>
+		<form action = "login/welcome/books/delete/display/" method = "post">
+			{% csrf_token %}
+			<input type = "text" name = "name">
+			<input type = "submit" value = "Search">
+		</form>
+		<a href = "login/welcome/books/">Back</a>
+	</body>
+</html>
