@@ -4,7 +4,6 @@ from django.template import Context, RequestContext, loader
 from models import Subscriber
 from login import views
 from forms import SubscriberForm
-
 flag = 0
 def index(request):
 	if not views.if_authenticated():
@@ -23,7 +22,7 @@ def addSub(request):
 		return HttpResponse(t.render(c))
 	form = SubscriberForm(request.POST)
 	if request.method == "POST" and form.is_valid():
-    	sub_details = Subscriber.objects.create(
+    		sub_details = Subscriber.objects.create(
 				sid = form.cleaned_data['sid'],
 				name = form.cleaned_data['name'],
 				gender = form.cleaned_data['gender'],

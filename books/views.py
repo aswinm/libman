@@ -22,7 +22,7 @@ def add(request):
 
 	form = BookAddForm(request.POST)
 	if request.method == 'POST' and form.is_valid():
-		book_details = Book.objects.create(
+        	book_details = Book.objects.create(
 				bid = form.cleaned_data['bid'],
 				name = form.cleaned_data['bname'],
 				author = form.cleaned_data['author'],
@@ -39,7 +39,6 @@ def add(request):
 		t = loader.get_template('add.html')
 		context = RequestContext(request, { 'text' :text , 'form': form})
 		return HttpResponse(t.render(context))
-	
 
 def search(request):
 	if not views.if_authenticated():
