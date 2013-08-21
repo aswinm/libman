@@ -5,7 +5,9 @@ class LendBook(models.Model):
 	bid = models.ForeignKey('books.Book',to_field = 'bid')
 	sid = models.ForeignKey('subscribers.Subscriber', to_field = 'sid')
 	date = models.DateField()
+	DueDate = models.DateField()
 	returned  = models.BooleanField()
+	ReturnDate = models.DateField(null = True)
 
 
 

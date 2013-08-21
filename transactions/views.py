@@ -28,8 +28,6 @@ def lend(request):
 	bookid = Book.objects.get(pk = form.cleaned_data['bookid'])
 	if bookid.Avlbooks<1:
 		return HttpResponse('Book not available')
-	bookid.Avlbooks -= 1
-	bookid.save()
 	subid = Subscriber.objects.get(pk = form.cleaned_data['subscriberid'])
 	result = LendBook.objects.filter(bid = form.cleaned_data['bookid'], sid = form.cleaned_data['subscriberid'])
 	for j in result:
@@ -38,13 +36,17 @@ def lend(request):
         lending = LendBook.objects.create(
             bid = bookid,
             sid = subid,
-            date = form.cleaned_data['Date'],
+            date = datetime.datetime.now().date(),
+	    DueDate = form.cleaned_data['Date'] + datetime.timedelta(days = 15),
 	    returned = False,
         )
         lending.save()
+	bookid.Avlbooks -= 1
+	bookid.save()
         t = loader.get_template('success.html')
-        text = 'Transaction successfully saved'
-        c = RequestContext(request , { 'text' :text } )
+	info = 'Due date: ' + str(lending.DueDate.date())
+        text = 'Transaction successfully saved.'
+	c = RequestContext(request , { 'text' :text , 'info' : info } )
         return HttpResponse(t.render(c))
     else:
         text = 'Lend Book'
@@ -57,14 +59,20 @@ def returnbook(request):
 		t = loader.get_template('login.html')
 		c = RequestContext(request)
 		return HttpResponse(t.render(c))
-	form = LendingForm()
+	form = LendingForm(request.POST)
 	if request.method == "POST" and form.is_valid():
-		book = Book.objects.get(pk = form.cleaned_data['bookid'])
-		sub = Book.objects.get(pk = form.cleaned_data['subscriberid'])
+		print "POST"
+		bookid = form.cleaned_data['bookid']
+		subid = form.cleaned_data['subscriberid']
+		book = Book.objects.get(pk = bookid)
+		sub = Book.objects.get(pk = subid)
 		date = form.cleaned_data['Date']
-		details = LendBook.objects.get(bid = book,sid = sub, returned = False)
-		details.returned = True
-		details.save()
+		print "Values Assigned"
+		details = LendBook.objects.filter(bid = bookid,sid = subid, returned = False)
+		for j in details:
+			j.returned = True
+			j.ReturnDate = datetime.datetime.now().date()
+			j.save()
 		book.Avlbooks += 1
 		book.save()
         	t = loader.get_template('success.html')
@@ -72,7 +80,7 @@ def returnbook(request):
         	c = RequestContext(request , { 'text' :text } )
         	return HttpResponse(t.render(c))
 	else:
-		text = 'Lend Book'
+		text = 'Return Book'
         	t = loader.get_template('add.html')
         	c = RequestContext(request , { 'text' : text , 'form' : form })
         	return HttpResponse(t.render(c))
