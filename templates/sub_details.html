@@ -1,0 +1,31 @@
+<html>
+	<title>SUBSCRIBER DETAILS</title>
+	<body>
+		SUBSCIRBER ID: {{ sub.sid }}<br>
+		
+		NAME: {{ sub.name }}<br>     GENDER: {{ sub.gender }}<br>
+		
+		CONTACT: {{ sub.contact }}<br> MAIL: {{ sub.mail }}<br>
+		BOOKS IN HAND: {{ sub.NoOfBooks }}
+		<table border = 1>
+			<tr>
+				<th>Transaction Id</th>
+				<th>Book Name</th>
+				<th>Lended date</th>
+				<th>Returned</th>
+				<th>Return Date</th>
+			</tr>
+			{% for i in history %}
+			<tr>
+				<td>{{ i.tid }}</td>
+				<td>{{ i.bid.name }}</td>
+				<td>{{ i.date }}</td>
+				<td>{{ i.returned }}</td>
+				<td>{{ i.ReturnDate }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<a href = "/login/welcome/subscribers/">Back</a>
+	</body>
+</html>
+	

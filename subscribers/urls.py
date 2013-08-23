@@ -8,5 +8,6 @@ urlpatterns = patterns('',
 		url(r'login/welcome/subscribers/delete/?$', views.searchdelete),
 		url(r'login/welcome/subscribers/search/display/?$', views.display),
 		url(r'login/welcome/subscribers/search/display/delete/?$', views.delete),
+		url(r'login/welcome/subscribers/search/display/(?P<sub_id>\d+)/$', views.displaydetails),
 		)
 

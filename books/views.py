@@ -4,7 +4,10 @@ from django.template import Context, RequestContext, loader
 from models import Book
 from forms import BookAddForm
 from login import views
+from transactions.models import LendBook
+
 flag = 0
+
 def index(request):
 	if not views.if_authenticated():
 		t = loader.get_template('login.html')
@@ -89,5 +92,18 @@ def delete(request):
 		c = RequestContext(request , { 'text' : text } )
 		return HttpResponse(t.render(c))
 	return HttpResponse('Error While deleting')
+
+def bookdetails(request, book_id):
+	if not views.if_authenticated():
+		t = loader.get_template('login.html')
+		c = RequestContext(request)
+		return HttpResponse(t.render(c))
+	book_details = Book.objects.get(pk = book_id)
+	book_history = LendBook.objects.filter(bid = book_id)
+	t = loader.get_template('book_details.html')
+	c = RequestContext(request , { 'book' : book_details , 'history' : book_history } )
+	return HttpResponse(t.render(c))
+
+
 	
 # Create your views here.

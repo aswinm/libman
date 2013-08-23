@@ -4,7 +4,10 @@ from django.template import Context, RequestContext, loader
 from models import Subscriber
 from login import views
 from forms import SubscriberForm
+from transactions.models import LendBook
+
 flag = 0
+
 def index(request):
 	if not views.if_authenticated():
 		page = loader.get_template('login.html')
@@ -88,5 +91,18 @@ def delete(request):
 		return HttpResponse(t.render(c))
 	return HttpResponse('Error While Deleting. Try again')
 
+def displaydetails(request, sub_id):
+	if not views.if_authenticated():
+		t = loader.get_template('login.html')
+		c = RequestContext(request)
+		return HttpResponse(t.render(c))
+	sub_details = Subscriber.objects.get(pk = sub_id)
+	history = LendBook.objects.filter(sid = sub_id)
+	t = loader.get_template('sub_details.html')
+	c = RequestContext(request, { 'sub' : sub_details , 'history' : history})
+	return HttpResponse(t.render(c))
+
+
 # Create your views here.
+
 

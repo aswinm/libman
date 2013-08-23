@@ -1,0 +1,12 @@
+<html>
+	<title>Filter Transactions</title>
+	<body>
+		<strong>ENTER DATES TO SEARCH</strong>
+		<form action = "." method = "post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type = "submit" value = "search">
+		</form>
+		<a href = "/login/welcome/transactions/">Back</a>
+	</body>
+</html>

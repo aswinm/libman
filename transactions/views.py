@@ -3,7 +3,7 @@ from login import views
 from  django.template import Context, RequestContext, loader
 from django.http import HttpResponse,HttpResponseRedirect
 from models import LendBook
-from forms import LendingForm
+from forms import LendingForm,TransactionStatement
 from books.models import Book
 from subscribers.models import Subscriber
 import datetime
@@ -33,18 +33,23 @@ def lend(request):
 	for j in result:
 		if j.returned == False:
 			return HttpResponse('Subscriber already has a copy of this book')
+	
+        Date = datetime.datetime.now().date()
         lending = LendBook.objects.create(
             bid = bookid,
             sid = subid,
-            date = datetime.datetime.now().date(),
-	    DueDate = form.cleaned_data['Date'] + datetime.timedelta(days = 15),
+	    date = Date,
+	    DueDate = Date + datetime.timedelta(days = 15),
 	    returned = False,
         )
         lending.save()
 	bookid.Avlbooks -= 1
 	bookid.save()
+	sub = Subscriber.objects.get(pk = form.cleaned_data['subscriberid'])
+	sub.NoOfBooks += 1
+	sub.save()
         t = loader.get_template('success.html')
-	info = 'Due date: ' + str(lending.DueDate.date())
+	info = 'Due date: ' + str(lending.DueDate)
         text = 'Transaction successfully saved.'
 	c = RequestContext(request , { 'text' :text , 'info' : info } )
         return HttpResponse(t.render(c))
@@ -66,7 +71,7 @@ def returnbook(request):
 		subid = form.cleaned_data['subscriberid']
 		book = Book.objects.get(pk = bookid)
 		sub = Book.objects.get(pk = subid)
-		date = form.cleaned_data['Date']
+		date = datetime.datetime.now().date() 
 		print "Values Assigned"
 		details = LendBook.objects.filter(bid = bookid,sid = subid, returned = False)
 		for j in details:
@@ -75,6 +80,9 @@ def returnbook(request):
 			j.save()
 		book.Avlbooks += 1
 		book.save()
+		sub_d = Subscriber.objects.get(pk = sub)
+		sub_d.NoOfBooks -= 1
+		sub_d.save()
         	t = loader.get_template('success.html')
         	text = 'Transaction successfully saved'
         	c = RequestContext(request , { 'text' :text } )
@@ -85,5 +93,23 @@ def returnbook(request):
         	c = RequestContext(request , { 'text' : text , 'form' : form })
         	return HttpResponse(t.render(c))
 	
+
+def transdet(request):
+	if not views.if_authenticated():
+		t = loader.get_template('login.html')
+		c = RequestContext(request)
+		return HttpResponse(t.render(c))
+	form = TransactionStatement(request.POST)
+	if request.method == "POST" and form.is_valid():
+		st = form.cleaned_data['stdate']
+		end = form.cleaned_data['enddate']
+		details = LendBook.objects.filter(date__range = [st,end])
+		t = loader.get_template('transactions_details.html')
+		c = RequestContext(request, { 'details': details } )
+		return HttpResponse(t.render(c))
+	else:
+        	t = loader.get_template('transaction_search.html')
+        	c = RequestContext(request , { 'form' : form })
+        	return HttpResponse(t.render(c))
 
 # Create your views here.

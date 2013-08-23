@@ -1,0 +1,28 @@
+<html>
+	<title>SUBSCRIBER DETAILS</title>
+	<body>
+		<table border = "1">
+			<tr>
+				<th>Transaction ID</th>
+				<th>Subscriber Name</th>
+				<th>Book Name</th>
+				<th>Lent Date</th>
+				<th>returned</th>
+				<th>Due date</th>
+				<th>Return Date</th>
+			</tr>
+			{% for record in details %}
+			<tr>
+				<td>{{ record.tid }}</td>
+				<td>{{ record.sid.name }}</td>
+				<td>{{ record.bid.name }}</td>
+				<td>{{ record.date }}</td>
+				<td>{{ record.returned }}</td>
+				<td>{{ record.DueDate }}</td>
+				<td>{{ record.ReturnDate }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<a href = "/login/welcome/transactions/">Back</a>
+	</body>
+</html>

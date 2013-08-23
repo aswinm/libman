@@ -1,0 +1,30 @@
+<html>
+	<title>BOOK DETAILS</title>
+	<body>
+		BOOK ID: {{ book.bid }}<br>
+		
+		NAME: {{ book.name }}     AUTHOR: {{ book.author }}<br>
+		
+		Total Books: {{ book.Totbooks }} Available Books: {{ book.Avlbooks }}<br>
+		<table border = 1>
+			<tr>
+				<th>Transaction Id</th>
+				<th>Subscriber Name</th>
+				<th>Lended date</th>
+				<th>Returned</th>
+				<th>Return Date</th>
+			</tr>
+			{% for i in history %}
+			<tr>
+				<td>{{ i.tid }}</td>
+				<td>{{ i.sid.name }}</td>
+				<td>{{ i.date }}</td>
+				<td>{{ i.returned }}</td>
+				<td>{{ i.ReturnDate }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<a href = "/login/welcome/books/">Back</a>
+	</body>
+</html>
+	

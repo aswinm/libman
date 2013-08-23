@@ -13,21 +13,13 @@
 				{% for i in sublist %}
 			<tr>
 				<td>{{ i.sid }}</td>
-				<td>{{ i.name }}</td>
+				<td><a href = "/login/welcome/subscribers/search/display/{{ i.sid }}/">{{ i.name }}</a></td>
 				<td>{{ i.gender }}</td>
 				<td>{{ i.contact }}</td>
 				<td>{{ i.mail }}</td>
 			</tr>
 				{% endfor %}
 		</table>
-		{% if j %}
-		<form action = "login/welcome/subscribers/search/display/delete/" method = "post">
-			{% csrf_token %}
-			<h5>Enter Book Id to Delete</h5>
-			<input type = "text" name = "name">
-			<input type = "submit" value = "Delete">
-		</form>
-		{% endif %}
 	</body>
 </html>
 			
